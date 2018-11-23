@@ -1,0 +1,17 @@
+Package: BLCAsubtyping
+Type: Package
+Title: Predicting bladder cancer molecular subtypes for different classification systems based on expression profiles 
+Version: 2.0
+Authors@R: 
+    c(person("Aurelien", "de Reynies", 
+             email = "aurelien.dereynies@ligue-cancer.net", 
+             role = c("aut", "cre")), 
+      person("Aurelie", "Kamoun", 
+             email = "aurelie.kamoun@ligue-cancer.net", 
+             role = c("aut")))
+Maintainer: <CITR@ligue-cancer.net>
+Description: Predicting bladder cancer molecular subtype for different classification systems based on expression profiles
+Depends: R (>= 2.6.0)
+Imports:
+    maptree 
+License: GPL (>= 2)
