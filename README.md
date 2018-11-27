@@ -20,9 +20,9 @@ The package includes an example dataset [5] to illustrate the use of the main fu
 ```{r}
 data(example_dat) 
 ``` 
-is a list 'cit' with two items 'expMat' and 'gpl'
+example_dat contains a list `cit` with two items 'expMat' and 'gpl'
 
-The function 'classify' is used to subtype a batch of transcriptomic profiles according to one or several of the 6 classification implemented.
+The function `classify` is used to subtype a batch of transcriptomic profiles according to one or several of the 6 classification implemented.
 
 In the following call to 'classify', the samples will be classified according to all 6 classification systems.
 ```{r}
