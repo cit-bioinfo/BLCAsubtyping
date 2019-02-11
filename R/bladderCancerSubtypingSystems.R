@@ -1,7 +1,8 @@
-classify <- function(expMat, gpl = NULL, symbol = "Gene.Symbol",
+classify <- function(expMat, gpl, symbol = "Gene.Symbol",
                      classification.systems = c("Baylor", "UNC", "CIT", "Lund", "MDA", "TCGA")
                      ){
   
+  gpl[, symbol] <- as.character(gpl[, symbol])
   res.class <- data.frame(ID = colnames(expMat), stringsAsFactors = F)
   
   if("Baylor" %in% classification.systems){

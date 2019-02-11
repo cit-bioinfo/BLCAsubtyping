@@ -11,7 +11,7 @@ Authors@R:
              role = c("aut")))
 Maintainer: <CITR@ligue-cancer.net>
 Description: Predicting bladder cancer molecular subtype for different classification systems based on expression profiles
-Depends: R (>= 2.6.0)
+Depends: R (>= 2.6.0), pamr, cluster, survival
 Imports:
     maptree 
 License: GPL (>= 2)
