@@ -2,7 +2,7 @@
 Transcriptomic tools to classify bladder tumours according to six published molecular classifications : Baylor[1], UNC[2], MDA[3], Lund[4], CIT-Curie[5], TCGA[6]
 
 ## Citation
-For now, please provide a link to this github repository:
+For now, you can cite the following bioRxiv preprint: bioRxiv 488460; doi: https://doi.org/10.1101/488460
 <https://github.com/cit-bioinfo/BLCAsubtyping>
 
 ## Install
@@ -15,6 +15,14 @@ library(devtools)
 devtools::install_github("cit-bioinfo/BLCAsubtyping")
 library(BLCAsubtyping)
 ```
+## Usage
+This package provides a main function named `classify` which labels a batch of RNA transcriptomic profiles according to one or several of the 6 classifications implemented. 
+`classify` requires the following main arguments :  
+- `expMat` : A data.frame or matrix of normalized expression data with genes in row and samples in column.  
+- `gpl` : A data.frame with gene/probeset annotation with at least one column with HGNC gene symbols and row names corresponding to the row names of `expMat`.  
+- `symbol` : A character specifying the column name of `gpl` containing HGNC gene symbols.  
+- `classification.systems` : A character vector with the names of the classifications to be run on the `expMat` data, among "Baylor"([1]), "UNC"([2]), "MDA"([3]), "Lund"([4]), "CIT"([5]), "TCGA"([6]).  
+
 ## Example
 The package includes an example dataset [5] to illustrate the use of the main function.
 ```{r}
@@ -22,9 +30,7 @@ data(example_dat)
 ``` 
 example_dat contains a list `cit` with two items 'expMat' and 'gpl'
 
-The function `classify` is used to subtype a batch of transcriptomic profiles according to one or several of the 6 classification implemented.
-
-In the following call to 'classify', the samples will be classified according to all 6 classification systems.
+In the following call to `classify`, the samples will be classified according to all 6 classification systems.  
 ```{r}
 cl <- classify(expMat = cit$expMat, gpl = cit$gpl, symbol = "Symbol", classification.systems = c("Baylor", "UNC", "MDA", "CIT", "Lund", "TCGA"))
 #predicting Baylor subtypes......DONE 
@@ -36,7 +42,7 @@ cl <- classify(expMat = cit$expMat, gpl = cit$gpl, symbol = "Symbol", classifica
 #predicting TCGA subtypes......DONE 
 ``` 
 
-The function returns a dataframe with subtyping results from each classification system for all samples.
+The function returns a dataframe with subtyping results from each classification system for all samples.  
 ```{r}
 head(cl)
 #       ID Baylor.subtype UNC.subtype CIT.subtype Lund.subtype MDA.subtype      TCGA.subtype
