@@ -18,7 +18,7 @@ library(BLCAsubtyping)
 ## Usage
 This package provides a main function named `classify` which labels a batch of RNA transcriptomic profiles according to one or several of the 6 classifications implemented. 
 `classify` requires the following main arguments :  
-- `expMat` : A data.frame or matrix of normalized expression data with genes in row and samples in column.  
+- `expMat` : A data.frame or matrix of normalized expression data with genes in row and samples in column. RNA-seq data should be log-transformed. 
 - `gpl` : A data.frame with gene/probeset annotation with at least one column with HGNC gene symbols and row names corresponding to the row names of `expMat`.  
 - `symbol` : A character specifying the column name of `gpl` containing HGNC gene symbols.  
 - `classification.systems` : A character vector with the names of the classifications to be run on the `expMat` data, among "Baylor"([1]), "UNC"([2]), "MDA"([3]), "Lund"([4]), "CIT"([5]), "TCGA"([6]).  
