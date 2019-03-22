@@ -3,7 +3,7 @@ classify <- function(expMat, gpl, symbol = "Gene.Symbol",
                      ){
   
   gpl[, symbol] <- as.character(gpl[, symbol])
-  if (length(is.na(gpl[, symbol]))) > 0 gpl <- gpl[-is.na(gpl[, symbol]), ]
+  if (length(is.na(gpl[, symbol])) > 0) gpl <- gpl[-is.na(gpl[, symbol]), ]
   
   res.class <- data.frame(ID = colnames(expMat), stringsAsFactors = F)
   
