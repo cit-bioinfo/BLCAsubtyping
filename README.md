@@ -16,7 +16,7 @@ You may install this package with [devtools]:
 
 ```{r}
 require(devtools)
-devtools::install_github("cit-bioinfo/BLCAsubtyping")
+devtools::install_github("cit-bioinfo/BLCAsubtyping", build_vignettes = TRUE)
 ```
 
 ## Documentation
