@@ -3,7 +3,6 @@ Transcriptomic tools to classify bladder tumours according to six published mole
 
 ## Citation
 For now, you can cite the following bioRxiv preprint: bioRxiv 488460; doi: https://doi.org/10.1101/488460
-<https://github.com/cit-bioinfo/BLCAsubtyping>
 
 ## Consensus Class
 
