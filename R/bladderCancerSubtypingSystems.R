@@ -1,4 +1,44 @@
-classify <- function(expMat, gpl, symbol = "Gene.Symbol",
+#' classify - Classify a BLCA sample from gene expression data
+#' 
+#' This function assigns molecular subtypes to bladder samples using expression data, 
+#' according to several classification systems.
+#' 
+#' @param expMat Matrix or dataframe of normalized expression data. 
+#' Samples are in column and probesets are in row. Rownames and colnames are required.
+#' @param gpl Dataframe with matching information between expMat rownames and HGNC gene symbols. 
+#' The dataframe must have rownames corresponding to ExpMat rownames,
+#' and at least one column with associated gene symbols
+#' @param symbol Character string referring to the column name of gpl containing gene symbols
+#' @param classification.systems A character vector with names of the classification systems to consider
+#'  among Baylor, UNC, CIT, Lund, MDA and TCGA.
+#'  
+#' @return A dataframe of samples annotated according to each classification system.
+#' 
+#' @author Aurelien de Reynies
+#' @keywords methods
+#' @note This is a contribution from the Tumor Identity Cards (CIT) program founded by the 
+#' 'Ligue Nationale Contre le Cancer' (France): \url{http://cit.ligue-cancer.net}. 
+#' For any question please contact \url{CITR@ligue-cancer.net}
+#' 
+#' @examples
+#' data(cit)
+#' 
+#' #-- Classify using all classification types
+#' res <- classify(cit$expMat, cit$gpl, symbol = "Symbol")
+#' head(res)
+#' 
+#' #-- Get TCGA classification
+#' tcga_res <- res[, c("ID", "TCGA.subtype")]
+#' head(tcga_res)
+#' 
+#' @import cluster pamr survival
+#' @importFrom grDevices graphics.off gray pdf rainbow
+#' @importFrom graphics legend par plot
+#' @importFrom stats as.dist cor cutree dist hclust mad median pchisq quantile sd setNames t.test var
+#' @importFrom utils data
+#' @export
+#' 
+classify <- function(expMat, gpl = NULL, symbol = "Gene.Symbol",
                      classification.systems = c("Baylor", "UNC", "CIT", "Lund", "MDA", "TCGA")
                      ){
   
@@ -16,7 +56,7 @@ classify <- function(expMat, gpl, symbol = "Gene.Symbol",
   if("UNC" %in% classification.systems){
     cat("predicting UNC subtypes...")
     res.class$UNC.subtype <- chapelHill.predict(expMat, Gpl = gpl, Symbol = symbol)[res.class$ID]
-    cat("...DONE \n")
+    cat("\n...DONE \n")
   }
   
   if("CIT" %in% classification.systems){
@@ -48,9 +88,7 @@ classify <- function(expMat, gpl, symbol = "Gene.Symbol",
 
 
 baylor.predict <- function(Exp, Gpl = NULL, Symbol = "Symbol"){
-  
-  data(baylor.genes)
-      
+
   if(is.null(Gpl)) { # if Gpl is null we expect rownames of Exp to be 'HUGO Gene Symbols'
     Gpl <- as.data.frame("Probe.ID" = rownames(Exp), "Symbol" = rownames(Exp), stringsAsFactors = F, row.names = rownames(Exp))
   }
@@ -84,10 +122,6 @@ baylor.predict <- function(Exp, Gpl = NULL, Symbol = "Symbol"){
 }
 
 chapelHill.predict <- function(Exp, Gpl = NULL, Symbol = "Symbol", nmin = 10, get_posterior = F){
-      
-  require(pamr)
-  data(chapelHill.training)
-  
   Exp <- cit.probesDataToSymbolData(Exp, Gpl, Symbol)
   
   classes <- chapelHill.training$classes
@@ -95,7 +129,7 @@ chapelHill.predict <- function(Exp, Gpl = NULL, Symbol = "Symbol", nmin = 10, ge
   genes   <- chapelHill.training$genes
                  
   G <- intersect(genes, rownames(Exp))
-  print(paste(length(G), " of ", nrow(expMat), " genes from the initial predictor are measured in this dataset", sep=""))
+  cat(paste(length(G), " of ", nrow(expMat), " genes from the initial predictor are measured in this dataset\n", sep=""))
   
   if(length(G) < nmin) stop("Too few genes to get a prediction.")
   Exp <- Exp[G, ]
@@ -117,9 +151,6 @@ chapelHill.predict <- function(Exp, Gpl = NULL, Symbol = "Symbol", nmin = 10, ge
 
 
 cit.classify <- function(Exp, Gpl=NULL, Symbol="Symbol"){
-  
-  data(CIT.CC_predictor)
-
   Exp <- cit.probesDataToSymbolData(Exp, Gpl, Symbol, classification.system = "CIT")
   G <- intersect(rownames(pred[[1]]$mean), rownames(Exp))
   D0  <- pred[[1]]$centroidsdata$data
@@ -144,9 +175,6 @@ cit.classify <- function(Exp, Gpl=NULL, Symbol="Symbol"){
 lund.predict <- function(Exp, Gpl=NULL, Symbol="Symbol", rowcentering=TRUE, nmin=100, ExplicitClassName = T){
   
   Exp <- cit.probesDataToSymbolData(Exp, Gpl, Symbol, classification.system = "Lund")
-  
-  data(lund2017.centroids)
-      
   Exp <- t(scale(t(Exp), scale = F))
   Lund.subtype <- ncc.corr(lund.centroids, Exp)
   Lund.subtype[which(Lund.subtype %in% c("GU-Inf1", "GU-Inf2"))] <- "GU-Inf"
@@ -161,9 +189,6 @@ MDA.predict <- function(Exp, Gpl = NULL, Symbol = "Symbol", nmin = 2000){
     Gpl <- as.data.frame(cbind("Probe.ID"= rownames(Exp), "Symbol"= rownames(Exp)), stringsAsFactors=F, row.names=rownames(Exp))
     names(Gpl)[2] <- Symbol
   }
-
-  data(mda.training)
-
   probes <- mda.training$probes
   probes. <- intersect(probes, dimnames(Exp)[[1]])
   d2 <- cit.quantileNormalize(Exp)
@@ -200,12 +225,7 @@ MDA.predict <- function(Exp, Gpl = NULL, Symbol = "Symbol", nmin = 2000){
 
 }
 
-
-
 TCGA.predict <- function(Exp, Gpl=NULL, Symbol="Symbol"){
-  
-  data(tcga2017.centroids)
-  
   Exp <- cit.probesDataToSymbolData(Exp,Gpl,Symbol,classification.system="TCGA")
   G <- intersect(rownames(tcga.centroids),rownames(Exp))
   

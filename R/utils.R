@@ -1,6 +1,4 @@
 plotSurv <- function(Clin, Event="OS", Time="OSdelay", File=NULL,classification.system=c("Baylor","ChapelHill","CIT","Lund","MDA","TCGA")[1],posLegend="bottom",main.prefix=""){
-     require(survival) 
-     
      if(classification.system=="Baylor"){
           Strat="Baylor.subtype"
           StratColors=c("Basal"="red3","Differentiated"="cyan")     
@@ -367,7 +365,7 @@ cit.distToCentroids <- function (d, centroids, dist.meth = c("spearman", "euclid
       inf <- lapply(L, function(x) c(median(x), max(x), 
                                      mad(x)))
       refcoreset <- cbind(refcoreset, matrix(unlist(inf), 
-                                             nc = 1, dimnames = list(c("med", "max", "mad"), 
+                                             ncol = 1, dimnames = list(c("med", "max", "mad"), 
                                                                      g)))
     }
     if (is.null(sdisttocent)) {

@@ -5,54 +5,29 @@ Transcriptomic tools to classify bladder tumours according to six published mole
 For now, you can cite the following bioRxiv preprint: bioRxiv 488460; doi: https://doi.org/10.1101/488460
 <https://github.com/cit-bioinfo/BLCAsubtyping>
 
+## Consensus Class
+
+For the Consensus BLCA classification, please use the consensusMIBC package: https://github.com/cit-bioinfo/consensusMIBC 
+
 ## Install
 You may install this package with [devtools]:
 
 [devtools]: https://github.com/hadley/devtools
 
 ```{r}
-library(devtools)
+require(devtools)
 devtools::install_github("cit-bioinfo/BLCAsubtyping")
-library(BLCAsubtyping)
 ```
-## Usage
-This package provides a main function named `classify` which labels a batch of RNA transcriptomic profiles according to one or several of the 6 classifications implemented. 
-`classify` requires the following main arguments :  
-- `expMat` : A data.frame or matrix of normalized expression data with genes in row and samples in column. RNA-seq data should be log-transformed. 
-- `gpl` : A data.frame with gene/probeset annotation with at least one column with HGNC gene symbols and row names corresponding to the row names of `expMat`.  
-- `symbol` : A character specifying the column name of `gpl` containing HGNC gene symbols.  
-- `classification.systems` : A character vector with the names of the classifications to be run on the `expMat` data, among "Baylor"([1]), "UNC"([2]), "MDA"([3]), "Lund"([4]), "CIT"([5]), "TCGA"([6]).  
 
-## Example
-The package includes an example dataset [5] to illustrate the use of the main function.
-```{r}
-data(example_dat) 
-``` 
-example_dat contains a list `cit` with two items 'expMat' and 'gpl'
+## Documentation
 
-In the following call to `classify`, the samples will be classified according to all 6 classification systems.  
-```{r}
-cl <- classify(expMat = cit$expMat, gpl = cit$gpl, symbol = "Symbol", classification.systems = c("Baylor", "UNC", "MDA", "CIT", "Lund", "TCGA"))
-#predicting Baylor subtypes......DONE 
-#predicting UNC subtypes...[1] "47 of 47 genes from the initial predictor are measured in this dataset"
-#123456789101112131415161718192021222324252627282930...DONE 
-#predicting CIT subtypes......DONE 
-#predicting Lund subtypes......DONE 
-#predicting MDA subtypes......DONE 
-#predicting TCGA subtypes......DONE 
-``` 
+After installation, please refer to the vignette or function help files by calling:
 
-The function returns a dataframe with subtyping results from each classification system for all samples.  
 ```{r}
-head(cl)
-#       ID Baylor.subtype UNC.subtype CIT.subtype Lund.subtype MDA.subtype      TCGA.subtype
-#1 CIT.038          Basal       Basal         MC7    Ba/Sq-Inf       basal    Basal_squamous
-#2 CIT.073 Differentiated     Luminal         MC5       GU-Inf     luminal           Luminal
-#3 CIT.075          Basal       Basal         MC7        Ba/Sq       basal    Basal_squamous
-#4 CIT.078          Basal       Basal         MC7        Ba/Sq       basal    Basal_squamous
-#5 CIT.085          Basal     Luminal         MC1    UroA-Prog     luminal Luminal_papillary
-#6 CIT.100 Differentiated     Luminal         MC2       GU-Inf    p53-like           Luminal
-``` 
+library(BLCAsubtyping)
+vignette("BLCAsubtyping")
+? classify
+```
 
 ## References
 [1] Mo, Q. et al. Prognostic Power of a Tumor Differentiation Gene Signature for Bladder Urothelial Carcinomas. J. Natl. Cancer Inst. (2018).

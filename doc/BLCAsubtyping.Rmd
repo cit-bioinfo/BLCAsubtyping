@@ -1,0 +1,73 @@
+---
+title: "Predicting bladder cancer molecular subtypes for different classification systems based on expression profiles"
+author: "Aurelien de Reynies, Aurelie Kamoun"
+output: 
+    html_document:
+        toc: true
+vignette: >
+  %\VignetteIndexEntry{BLCAsubtyping}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+# Overview
+
+This package presents a tool to classify bladder tumours according to six published molecular classifications : Baylor[1], UNC[2], MDA[3], Lund[4], CIT-Curie[5], TCGA[6]
+
+## Citation
+For now, you can cite the following bioRxiv preprint: bioRxiv 488460; doi: https://doi.org/10.1101/488460
+<https://github.com/cit-bioinfo/BLCAsubtyping>
+
+# Install
+You may install this package with [devtools]:
+
+[devtools]: https://github.com/hadley/devtools
+
+```{r eval=FALSE}
+require(devtools)
+devtools::install_github("cit-bioinfo/BLCAsubtyping")
+```
+# Usage
+This package provides a main function named `classify` which labels a batch of RNA transcriptomic profiles according to one or several of the 6 classifications implemented. 
+`classify` requires the following main arguments :  
+- `expMat` : A data.frame or matrix of normalized expression data with genes in row and samples in column. RNA-seq data should be log-transformed. 
+- `gpl` : A data.frame with gene/probeset annotation with at least one column with HGNC gene symbols and row names corresponding to the row names of `expMat`.  
+- `symbol` : A character specifying the column name of `gpl` containing HGNC gene symbols.  
+- `classification.systems` : A character vector with the names of the classifications to be run on the `expMat` data, among "Baylor"([1]), "UNC"([2]), "MDA"([3]), "Lund"([4]), "CIT"([5]), "TCGA"([6]).  
+
+# Example
+The package includes an example dataset [5] to illustrate the use of the main function.
+
+```{r message=FALSE}
+library(BLCAsubtyping)
+data(cit) 
+``` 
+`cit` contains the CIT dataset composed of a list with two items: 'expMat' and 'gpl'
+
+In the following call to `classify`, the samples will be classified according to all 6 classification systems.  
+```{r}
+cl <- classify(expMat = cit$expMat, gpl = cit$gpl, symbol = "Symbol", classification.systems = c("Baylor", "UNC", "MDA", "CIT", "Lund", "TCGA"))
+``` 
+
+The function returns a dataframe with subtyping results from each classification system for all samples.  
+```{r eval=FALSE}
+head(cl)
+``` 
+```{r echo=FALSE}
+kableExtra::kable_styling(knitr::kable(head(cl), digits = 3, format = "html"))
+``` 
+
+# References
+[1] Mo, Q. et al. Prognostic Power of a Tumor Differentiation Gene Signature for Bladder Urothelial Carcinomas. J. Natl. Cancer Inst. (2018).
+
+[2] Damrauer, J. S. et al. Intrinsic subtypes of high-grade bladder cancer reflect the hallmarks of breast cancer biology. Proc. Natl. Acad. Sci. U.S.A. 111, 3110–3115 (2014).
+
+[3] Choi, W. et al. Identification of distinct basal and luminal subtypes of muscle-invasive bladder cancer with different sensitivities to frontline chemotherapy. Cancer Cell 25, 152–165 (2014).
+
+[4] Marzouka, N. et al. A validation and extended description of the Lund taxonomy for urothelial carcinoma using the TCGA cohort. Scientific Reports 8, 3737 (2018).
+
+[5] Rebouissou, S. et al. EGFR as a potential therapeutic target for a subset of muscle-invasive bladder cancers presenting a basal-like phenotype. Sci Transl Med 6, 244ra91 (2014).
+
+[6] Robertson, A. G. et al. Comprehensive Molecular Characterization of Muscle-Invasive Bladder Cancer. Cell 171, 540-556.e25 (2017).
+ 
+
