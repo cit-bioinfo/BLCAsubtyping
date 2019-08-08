@@ -24,7 +24,7 @@
 #' data(cit)
 #' 
 #' #-- Classify using all classification types
-#' res <- classify(cit$expMat, cit$gpl, symbol = "Symbol")
+#' res <- classify(cit)
 #' head(res)
 #' 
 #' #-- Get TCGA classification
@@ -42,8 +42,14 @@ classify <- function(expMat, gpl = NULL, symbol = "Gene.Symbol",
                      classification.systems = c("Baylor", "UNC", "CIT", "Lund", "MDA", "TCGA")
                      ){
   
-  gpl[, symbol] <- as.character(gpl[, symbol])
-  if(any(is.na(gpl[, symbol]))) gpl <- gpl[-is.na(gpl[, symbol]), ]
+  if(is.null(gpl)) {
+    gpl <- data.frame("Probe.ID" = rownames(expMat), 
+                      "Gene.Symbol" = rownames(expMat), 
+                      stringsAsFactors = F, row.names = rownames(expMat))
+  } else {
+    gpl[, symbol] <- as.character(gpl[, symbol])
+    if(any(is.na(gpl[, symbol]))) gpl <- gpl[-is.na(gpl[, symbol]), ]
+  }
   
   res.class <- data.frame(ID = colnames(expMat), stringsAsFactors = F)
   
@@ -89,9 +95,9 @@ classify <- function(expMat, gpl = NULL, symbol = "Gene.Symbol",
 
 baylor.predict <- function(Exp, Gpl = NULL, Symbol = "Symbol"){
 
-  if(is.null(Gpl)) { # if Gpl is null we expect rownames of Exp to be 'HUGO Gene Symbols'
-    Gpl <- as.data.frame("Probe.ID" = rownames(Exp), "Symbol" = rownames(Exp), stringsAsFactors = F, row.names = rownames(Exp))
-  }
+  # if(is.null(Gpl)) { # if Gpl is null we expect rownames of Exp to be 'HUGO Gene Symbols'
+  #   Gpl <- data.frame("Probe.ID" = rownames(Exp), "Symbol" = rownames(Exp), stringsAsFactors = F, row.names = rownames(Exp))
+  # }
   
   G <- intersect(rownames(Exp), rownames(Gpl))
   Exp <- Exp[G, ]

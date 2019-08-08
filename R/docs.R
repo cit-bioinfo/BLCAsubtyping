@@ -12,14 +12,9 @@
 
 #' CIT BLCA cohort data
 #' 
-#' Gene expression and annotation data derived from the CIT cohort of bladder cancer.
+#' Gene expression data derived from the CIT cohort of bladder cancer.
 #' 
-#' @format A list with two elements:
-#' \describe{
-#'     \item{expMat}{A data.frame that contains gene expression data derived from microarray, 
-#'     with probes in the rows and samples in the columns.}
-#'     \item{gpl}{ A data.frame that contains annotation for the probes, with different probes
-#'     in the rows and identifiers in the columns.}
-#' }
+#' @format A data.frame that contains gene expression data derived from microarray, 
+#'     with probes in the rows and samples in the columns.
 #' @references \url{https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-1803/}
 "cit"

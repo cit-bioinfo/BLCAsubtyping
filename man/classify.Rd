@@ -37,7 +37,7 @@ For any question please contact \url{CITR@ligue-cancer.net}
 data(cit)
 
 #-- Classify using all classification types
-res <- classify(cit$expMat, cit$gpl, symbol = "Symbol")
+res <- classify(cit)
 head(res)
 
 #-- Get TCGA classification

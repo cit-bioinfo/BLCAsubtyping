@@ -42,11 +42,11 @@ The package includes an example dataset [5] to illustrate the use of the main fu
 library(BLCAsubtyping)
 data(cit) 
 ``` 
-`cit` contains the CIT dataset composed of a list with two items: 'expMat' and 'gpl'
+`cit` contains 50 samples from the CIT dataset. It is a matrix with gene symbols as rownames and sample IDs as colnames. If rownames are not HGNC gene symbols, an annotation data.frame can be given to the `gpl` argument, where the rownames of the annotation are the rownames of the gene expression matrix and one of the columns is HGNC gene symbols. The name of the column with the gene symbols can be passed to the `symbol` argument.
 
 In the following call to `classify`, the samples will be classified according to all 6 classification systems.  
 ```{r}
-cl <- classify(expMat = cit$expMat, gpl = cit$gpl, symbol = "Symbol", classification.systems = c("Baylor", "UNC", "MDA", "CIT", "Lund", "TCGA"))
+cl <- classify(expMat = cit, classification.systems = c("Baylor", "UNC", "MDA", "CIT", "Lund", "TCGA"))
 ``` 
 
 The function returns a dataframe with subtyping results from each classification system for all samples.  
