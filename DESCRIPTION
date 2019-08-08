@@ -6,8 +6,8 @@ Author: Aurelien de Reynies [aut, cre], Aurelie Kamoun [aut]
 Maintainer: <CITR@ligue-cancer.net>
 Description: This package provides the 'classify' function, that can be used to predict class for bladder cancer samples using several different classification systems, from the sample's expression profile.
 Depends: R (>= 3.5.0), pamr, cluster, survival
-Imports: maptree 
-Suggests: knitr, rmarkdown, kableExtra
+Imports: maptree, kableExtra
+Suggests: knitr, rmarkdown
 License: GPL (>= 2)
 RoxygenNote: 6.1.1
 Encoding: UTF-8
