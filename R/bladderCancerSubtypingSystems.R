@@ -103,7 +103,7 @@ baylor.predict <- function(Exp, Gpl = NULL, Symbol = "Symbol"){
   Exp <- Exp[G, ]
   Gpl <- Gpl[G, ]
 
-  geneID <- rownames(Gpl)[which(Gpl[, Symbol] %in% as.character(baylor.genes[, Symbol]))]
+  geneID <- rownames(Gpl)[which(Gpl[, Symbol] %in% as.character(baylor.genes[, "Symbol"]))]
   geneExp <- Exp[geneID, ]
   
   hc <- baylor.hcfun(baylor.dfuncc(t(as.matrix(baylor.standardize(geneExp)))))
