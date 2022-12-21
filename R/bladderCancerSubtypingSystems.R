@@ -3,7 +3,7 @@
 #' This function assigns molecular subtypes to bladder samples using expression data, 
 #' according to several classification systems.
 #' 
-#' @param expMat Matrix or dataframe of normalized expression data. 
+#' @param expMat Matrix of normalized expression data. 
 #' Samples are in column and probesets are in row. Rownames and colnames are required.
 #' @param gpl Dataframe with matching information between expMat rownames and HGNC gene symbols. 
 #' The dataframe must have rownames corresponding to ExpMat rownames,
@@ -50,6 +50,9 @@ classify <- function(expMat, gpl = NULL, symbol = "Gene.Symbol",
     gpl[, symbol] <- as.character(gpl[, symbol])
     if(any(is.na(gpl[, symbol]))) gpl <- gpl[-is.na(gpl[, symbol]), ]
   }
+  if(!("matrix" %in% class(expMat))) {
+    stop("`expMat` must be a matrix.")
+   }
   
   res.class <- data.frame(ID = colnames(expMat), stringsAsFactors = F)
   
